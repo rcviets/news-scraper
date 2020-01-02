@@ -1,6 +1,7 @@
 //Required Packages
 const mongoose = require("mongoose");
 const express = require("express");
+const exphbs = require("express-handlebars");
 const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -21,6 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //Static Folder = Public
 app.use(express.stating("public"));
+
+//Set Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 //Use Deployed Database or Local Database
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
