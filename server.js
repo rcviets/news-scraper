@@ -34,15 +34,30 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlin
 mongoose.connect(MONGODB_URI);
 console.log("Running on Port " + PORT);
 
+
+//ROUTES
+
+//GET Route To Scrape Website
 app.get("/scrape", function(req, res) {
-    sxios.get("https://www.fark.com/").then(function(response) {
+    axios.get("https://www.fark.com/").then(function(response) {
         var $ = cheerio.load(response.data);
 
         $("tr td").each(function(i, element) {
             const result = {};
-
+            
+            //Result Object
             result.title = $(this).children(".headlineText").children(".headline").children("a").text();
             result.link = $(this).children(".headlineText").children(".headline").children("a").attr("href");
-        })
-    })
-})
+
+            //Create Article From Result Object
+            db.Article.create(result)
+                .then(function(dbArticle) {
+                    console.log(dbArticle);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        });
+        res.send("Scrape Completed");
+    });
+});
