@@ -1,6 +1,6 @@
 //Required Packages && Schema
 const mongoose = require("mongoose");
-const Schema = monsgoose.Schema;
+const Schema = mongoose.Schema;
 
 //Create Mongoose Object
 const ArticleSchema = new Schema({

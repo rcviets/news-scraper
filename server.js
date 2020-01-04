@@ -5,7 +5,6 @@ const exphbs = require("express-handlebars");
 const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const db = require("./models");
 
 //Require Models
 const db = require("./models");
