@@ -32,8 +32,6 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlin
 
 //Connect to Mongo DB
 mongoose.connect(MONGODB_URI);
-console.log("Running on Port " + PORT);
-
 
 //ROUTES
 
@@ -83,4 +81,23 @@ app.get("/articles/:id", function(req, res) {
         .catch(function(err) {
             res.json(err);
         });
+});
+
+//Create || Update Article Note
+app.post("/articles/:id", function(req, res) {
+    db.Note.create(req.body)
+        .then(function(dbNote) {
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id}, { new: true});
+        })
+        .then(function(dbArticle) {
+            res.json(dbArticle)
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+//Start Server
+app.listen(PORT, function() {
+    console.log("Running on Port " + PORT);
 });
