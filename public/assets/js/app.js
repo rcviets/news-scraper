@@ -11,7 +11,7 @@ $.getJSON("/articles", function(data) {
 $(document).on("click", "p", function() {
     $('#notes').empty();
 
-    const thisId = $(this).attr('data-id');
+    let thisId = $(this).attr('data-id');
 
     //AJAX Call for Article
     $.ajax({
@@ -31,3 +31,24 @@ $(document).on("click", "p", function() {
             }
         });
 });
+
+//Save Button
+$(document).on('click', '#savenote', function() {
+    let thisId = $(this).attr('data-id');
+
+    $.ajax({
+        method: "POST",
+        url: "/articles/" + thisId,
+        data: {
+            title: $('#titleinput').val(),
+            body: $('#bodyinput').val()
+        }
+    })
+        .then(function(data) {
+            console.log(data);
+            $('#notes').empty();
+        });
+
+        $('#titleinput').val('');
+        $('#bodyinput').val('');
+})
