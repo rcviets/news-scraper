@@ -7,6 +7,9 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
 
+//Require Models
+const db = require("./models");
+
 //Set PORT
 const PORT = 3000;
 
