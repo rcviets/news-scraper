@@ -21,7 +21,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //Static Folder = Public
-app.use(express.stating("public"));
+app.use(express.static("public"));
 
 //Set Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -32,3 +32,17 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlin
 
 //Connect to Mongo DB
 mongoose.connect(MONGODB_URI);
+console.log("Running on Port " + PORT);
+
+app.get("/scrape", function(req, res) {
+    sxios.get("https://www.fark.com/").then(function(response) {
+        var $ = cheerio.load(response.data);
+
+        $("tr td").each(function(i, element) {
+            const result = {};
+
+            result.title = $(this).children(".headlineText").children(".headline").children("a").text();
+            result.link = $(this).children(".headlineText").children(".headline").children("a").attr("href");
+        })
+    })
+})
